@@ -20,10 +20,10 @@ from matplotlib.projections import PolarAxes
 import re
 
 from secrets import CAL_ID, CLIENT_SECRET_FILENAME, ADDRESS, LAT, LON
-# You need to supply a secrets.py file in your project directory which assigns these two variables with the correct strings from google's API: 
-# CAL_ID = [numbers_and_letters]@group.calendar.google.com'
-# CLIENT_SECRET_FILENAME = 'client_secret_[numbers]-[numbers_and_letters].apps.googleusercontent.com.json')
-# ADDRESS = [the_street_addres]
+# You need to supply a secrets.py file in your project directory which assigns these variables with the correct strings from google's API: 
+# CAL_ID = <digits_and_letters>@group.calendar.google.com' 
+# CLIENT_SECRET_FILENAME = 'client_secret_<digits>-<digits_and_letters>.apps.googleusercontent.com.json')
+# ADDRESS = <your_street_addres>
 # LAT = '12.312312'
 # LON = '34.534534'
 
@@ -52,7 +52,7 @@ dt = datetime.utcnow() - timedelta(days=2)
 sweet_spot_tolerance = 15
 
 def distance(lat1,lon1,lat2,lon2):
-    # approximate radius of earth in km
+    # Approximate radius of earth in km
     R = 6373.0
     dlon = lon2 - lon1
     dlat = lat2 - lat1
@@ -77,8 +77,7 @@ while dt < datetime.utcnow() + timedelta(days=3*365) or in_sweet_spot:
     m_degrees_off_w = float(repr(m_hrs_off_w))/pi*180
     s_hrs_off_m = ephem.separation((sun.az, sun.alt), (moon.az, moon.alt))
     s_degrees_off_m = float(repr(s_hrs_off_m))/pi*180
-    #print(sun.alt < 0 , moon.az > 90/360 , moon.az < 135/360 , moon.alt > 30, moon.alt < 80)
-
+    
     if m_degrees_off_w < sweet_spot_tolerance and (s_degrees_off_m > 90 or float(repr(sun.alt))/pi*180 < 0):  
         if m_degrees_off_w < min_off:
             min_off = m_degrees_off_w
@@ -217,7 +216,5 @@ for i in durations:
     service.events().insert(calendarId=CAL_ID, body=event).execute()
 
 print('%s events added between now and %s. Great success!' % (len(durations),i['end'].strftime('%b %Y')))
-
-
 
 # %%
